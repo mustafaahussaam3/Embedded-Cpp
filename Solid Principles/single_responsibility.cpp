@@ -121,13 +121,14 @@ struct PrintEntirsManager
 auto main(int  argc,char** argv)-> int
 {
 	Journal Alahram{ "Alahram" };
-	JournalSport Alahly{ "AlAhly" };
+	//JournalSport Alahly{ "AlAhly" };
 
 	Alahram.add("There is was a visit for the prime minstar of Egypt to india");
-	Alahly.add("Alahly wining the third place in the worl cup");
+	Alahram.add("Hello From elAhram");
+	//Alahly.add("Alahly wining the third place in the worl cup");
 
 	PrintEntirsManager::save(Alahram, "AlahramXML");
-	PrintEntirsManager::save(Alahly,"Al-Ahly");
+	//PrintEntirsManager::save(Alahly,"Al-Ahly");
 
 	return 1;
 }
