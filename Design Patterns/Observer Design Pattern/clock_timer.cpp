@@ -45,6 +45,28 @@
 We need in our example observable (clock Timer) and observers (Analog - Digital), if the observable changes it's timer our observers will get notifed with the new time
 and we will do certain activities in response to alerts sent by the subject 
 
+Questons: 
+    1. why we can only use sunject in the decleration at the beginning of code ?
+
+    2. why virtual destuctor ?
+
+    *Virtual destructors in C++ are used to avoid memory leaks especially when your class contains unmanaged code, 
+     i.e., contains pointers or object handles to files, databases or other external objects. A destructor can be virtual.
+     Let's understand why it is needed. Let's consider a scenario in which there are two classes, a base class called Base and a derived class called Derived. 
+     Now, constructors are invoked in the order of inheritance and destructors are invoked in the reverse order of inheritance. 
+     So, when an instance of the derived class is created, the constructor of the Base class would be invoked first, 
+     followed by the Derived class constructor. Similarly, the Derived class destructor would be invoked followed by the 
+     Base class destructor at the time when the object goes out of the scope or is destroyed explicitly.
+     Now, suppose you create an instance of the Derived class using a Base class pointer.
+     When you delete the pointer object using the delete keyword in C++, the destructor of the Base class would be called but the destructor of the Derived class 
+     would simply be ignored. The reason is that the destructor is simply another method and so when the delete keyword is used to delete the pointer instance,
+     the type of the pointer would be considered and not its context. And, because the type of the pointer is of type Base, the destructor of 
+     the Base class would only be invoked. This might create memory leaks as the instance of the derived class would still remain in memory even after
+     the pointer instance has been deleted/destroyed from memory. To avoid such potential memory leak issues, virtual destructors are used.
+     
+    3. why we check about the address of the updated subject with the current subject ?
+    
+     *Because it can be another Muli Subjects in your system so, you have to check that you take the right subject 
 
 CreatedBy: Mustafa Hussam Eldin 
 */                                                      
@@ -54,6 +76,7 @@ CreatedBy: Mustafa Hussam Eldin
 #include <algorithm>
 #include <vector>
 
+class Subject; 
 
 class Observer{
 
@@ -122,7 +145,7 @@ private:
 class DigitalClock : public Observer{
 
 public: 
-    DigitalClock(CounterClock& s) : sub(s) {
+   explicit DigitalClock(CounterClock& s) : sub(s) {
              sub.add(*this);  //subscribe, send object created pointer to add function
     }
 
@@ -156,7 +179,7 @@ private:
 class AnalogClock : public Observer {
 
 public:
-     AnalogClock(CounterClock& s) : sub(s) {
+    explicit AnalogClock(CounterClock& s) : sub(s) {
              sub.add(*this);  //subscribe, send object created pointer to add function
     }
 
@@ -190,11 +213,11 @@ private:
 int main (){
 
     CounterClock timer ; 
+
     DigitalClock dig(timer); 
     AnalogClock  ana(timer); 
 
-    timer.setTimer(12,30,59);
-
+    timer.setTimer(12,50,59);    
     return 0;
 }
 
